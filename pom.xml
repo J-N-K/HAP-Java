@@ -11,7 +11,7 @@
 
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<netty.version>4.1.34.Final</netty.version>
+		<netty.version>4.1.42.Final</netty.version>
 	</properties>
 
 	<licenses>
@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.60</version>
+			<version>1.51</version>
 		</dependency>
 
 		<dependency>
@@ -209,7 +209,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1</version>
 				<configuration>
 					<descriptors>
 						<descriptor>deploy/distribution.xml</descriptor>

@@ -8,8 +8,12 @@ import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.crypto.tls.AlertDescription;
 import org.bouncycastle.crypto.tls.TlsFatalAlert;
 import org.bouncycastle.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChachaDecoder {
+
+  private final Logger LOGGER = LoggerFactory.getLogger(ChachaDecoder.class);
 
   private final ChaChaEngine decryptCipher;
 
@@ -27,7 +31,10 @@ public class ChachaDecoder {
 
     byte[] calculatedMAC = PolyKeyCreator.create(macKey, additionalData, ciphertext);
 
+    LOGGER.trace("calculated '{}', received '{}'", calculatedMAC, receivedMAC);
+
     if (!Arrays.constantTimeAreEqual(calculatedMAC, receivedMAC)) {
+
       throw new TlsFatalAlert(AlertDescription.bad_record_mac);
     }
 

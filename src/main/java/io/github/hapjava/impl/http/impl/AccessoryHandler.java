@@ -4,10 +4,7 @@ import io.github.hapjava.impl.http.HomekitClientConnection;
 import io.github.hapjava.impl.http.HomekitClientConnectionFactory;
 import io.github.hapjava.impl.http.HttpResponse;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +39,7 @@ class AccessoryHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
   @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-    LOGGER.info("Terminated homekit connection from " + ctx.channel().remoteAddress().toString());
+    LOGGER.info("Terminated homekit connection from {}", ctx.channel().remoteAddress());
     super.channelInactive(ctx);
   }
 
