@@ -54,9 +54,10 @@ public class PairingManager {
         logger.warn("Received unexpected stage 3 request for " + registry.getLabel());
         return new UnauthorizedResponse();
       } else {
-        FinalPairHandler handler = new FinalPairHandler(srpHandler.getK(), authInfo, advertiser);
+        FinalPairHandler handler = new FinalPairHandler(srpHandler.getK(), authInfo);
         try {
-          return handler.handle(req);
+          HttpResponse response = handler.handle(req);
+          return response;
         } catch (Exception e) {
           logger.error("Exception while finalizing pairing", e);
           return new UnauthorizedResponse();
