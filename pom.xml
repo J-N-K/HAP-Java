@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.github.hap-java</groupId>
-	<artifactId>hap</artifactId>
+	<groupId>com.github.j-n-k</groupId>
+	<artifactId>hap-java</artifactId>
 	<name>hap-java</name>
 	<description>Homekit Accessory Protocol for Java</description>
-	<version>2.0.0.OH</version>
+	<version>2.0.0.OH2</version>
 	<packaging>jar</packaging>
-	<url>https://github.com/hap-java/HAP-Java</url>
+	<url>https://github.com/j-n-k/HAP-Java</url>
 
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,9 +23,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://github.com/hap-java/HAP-Java.git</connection>
-		<developerConnection>scm:git:git@github.com:hap-java/HAP-Java.git</developerConnection>
-		<url>https://github.com/hap-java/HAP-Java.git</url>
+		<connection>scm:git:https://github.com/j-n-k/HAP-Java.git</connection>
+		<developerConnection>scm:git:git@github.com:j-n-k/HAP-Java.git</developerConnection>
+		<url>https://github.com/j-n-k/HAP-Java.git</url>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -209,24 +209,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.1</version>
-				<configuration>
-					<descriptors>
-						<descriptor>deploy/distribution.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-publish-plugin</artifactId>
 				<version>3.0.0</version>
@@ -238,7 +220,7 @@
 							<goal>publish-scm</goal>
 						</goals>
 						<configuration>
-							<pubScmUrl>scm:git:git@github.com:hap-java/HAP-Java.git</pubScmUrl>
+							<pubScmUrl>scm:git:git@github.com:J-N-K/HAP-Java.git</pubScmUrl>
 							<scmBranch>gh-pages</scmBranch>
 						</configuration>
 					</execution>
@@ -278,18 +260,10 @@
 	</build>
 
 	<distributionManagement>
-		<site>
-			<id>website</id>
-			<url>https://hap-java.github.io/</url>
-		</site>
 		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>bintray-j-n-k-repo</id>
+			<url>https://api.bintray.com/maven/j-n-k/hap-java/hap-java/;publish=0</url>
 		</repository>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<reporting>
@@ -321,59 +295,5 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<profiles>
-		<profile>
-			<id>ossrh</id>
-			<properties>
-					<gpg.executable>gpg</gpg.executable>
-					<gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
-					<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
-					<gpg.defaultKeyring>false</gpg.defaultKeyring>
-					<gpg.publicKeyring>deploy/pubring.gpg</gpg.publicKeyring>
-					<gpg.secretKeyring>deploy/secring.gpg</gpg.secretKeyring>
-			</properties>
-			<activation>
-					<property>
-							<name>performRelease</name>
-							<value>true</value>
-					</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.3</version>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<version>2.5.3</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
