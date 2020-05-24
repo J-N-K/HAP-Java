@@ -1,6 +1,5 @@
 package io.github.hapjava.accessories;
 
-import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithFanState;
 import io.github.hapjava.characteristics.HomekitCharacteristicChangeCallback;
 import io.github.hapjava.services.Service;
 import io.github.hapjava.services.impl.FanService;
@@ -9,8 +8,7 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * A fan with basic characteristics. User {@link AccessoryWithFanState} for Fan with more
- * characteristics.
+ * A fan with mandatory characteristics.
  *
  * @author Andy Lintner
  */
@@ -34,7 +32,7 @@ public interface FanAccessory extends HomekitAccessory {
   /**
    * Subscribes to changes in the active state of the fan.
    *
-   * @param callback the function to call when the direction changes.
+   * @param callback the function to call when the active state changes.
    */
   void subscribeActive(HomekitCharacteristicChangeCallback callback);
 

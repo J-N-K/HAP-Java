@@ -3,11 +3,7 @@ package io.github.hapjava.accessories.optionalcharacteristic;
 import io.github.hapjava.characteristics.HomekitCharacteristicChangeCallback;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Accessory with cooling threshold temperature.
- *
- * @author Eugen Freiter
- */
+/** Accessory with cooling threshold temperature. */
 public interface AccessoryWithCoolingThresholdTemperature {
 
   /**
@@ -24,6 +20,36 @@ public interface AccessoryWithCoolingThresholdTemperature {
    * @throws Exception when the threshold temperature cannot be changed.
    */
   void setCoolingThresholdTemperature(Double value) throws Exception;
+
+  /**
+   * return the min value for cooling threshold temperature. overwrite if you want to change the
+   * default value.
+   *
+   * @return min threshold temperature
+   */
+  default double getMinCoolingThresholdTemperature() {
+    return 10;
+  }
+
+  /**
+   * return the max value for cooling threshold temperature. overwrite if you want to change the
+   * default value.
+   *
+   * @return max threshold temperature
+   */
+  default double getMaxCoolingThresholdTemperature() {
+    return 35;
+  }
+
+  /**
+   * return the min step value for cooling threshold temperature. overwrite if you want to change
+   * the default value.
+   *
+   * @return step for threshold temperature
+   */
+  default double getStepCoolingThresholdTemperature() {
+    return 0.1;
+  }
 
   /**
    * Subscribes to changes in the cooling threshold.

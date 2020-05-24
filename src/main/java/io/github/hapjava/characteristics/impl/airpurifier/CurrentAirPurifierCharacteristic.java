@@ -7,7 +7,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/** This characteristic describes the current state of the air purifier. */
+/**
+ * This characteristic describes the current state of the air purifier. See {@link
+ * CurrentAirPurifierStateEnum} for possible values.
+ */
 public class CurrentAirPurifierCharacteristic
     extends EnumCharacteristic<CurrentAirPurifierStateEnum> {
 

@@ -3,7 +3,7 @@ package io.github.hapjava.services.impl;
 import io.github.hapjava.accessories.ThermostatAccessory;
 import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithCoolingThresholdTemperature;
 import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithCurrentRelativeHumidity;
-import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithHeatingThresholdTemprature;
+import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithHeatingThresholdTemperature;
 import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithName;
 import io.github.hapjava.accessories.optionalcharacteristic.AccessoryWithTargetRelativeHumidity;
 import io.github.hapjava.characteristics.impl.common.NameCharacteristic;
@@ -46,10 +46,16 @@ public class ThermostatService extends AbstractServiceImpl {
             accessory::subscribeTargetState,
             accessory::unsubscribeTargetState),
         new CurrentTemperatureCharacteristic(
+            accessory.getMinCurrentTemperature(),
+            accessory.getMaxCurrentTemperature(),
+            accessory.getMinStepCurrentTemperature(),
             accessory::getCurrentTemperature,
             accessory::subscribeCurrentTemperature,
             accessory::unsubscribeCurrentTemperature),
         new TargetTemperatureCharacteristic(
+            accessory.getMinTargetTemperature(),
+            accessory.getMaxTargetTemperature(),
+            accessory.getMinStepTargetTemperature(),
             accessory::getTargetTemperature,
             accessory::setTargetTemperature,
             accessory::subscribeTargetTemperature,
@@ -71,13 +77,13 @@ public class ThermostatService extends AbstractServiceImpl {
           ((AccessoryWithCoolingThresholdTemperature) accessory)
               ::unsubscribeCoolingThresholdTemperature);
     }
-    if (accessory instanceof AccessoryWithHeatingThresholdTemprature) {
+    if (accessory instanceof AccessoryWithHeatingThresholdTemperature) {
       new HeatingThresholdTemperatureCharacteristic(
-          ((AccessoryWithHeatingThresholdTemprature) accessory)::getHeatingThresholdTemperature,
-          ((AccessoryWithHeatingThresholdTemprature) accessory)::setHeatingThresholdTemperature,
-          ((AccessoryWithHeatingThresholdTemprature) accessory)
+          ((AccessoryWithHeatingThresholdTemperature) accessory)::getHeatingThresholdTemperature,
+          ((AccessoryWithHeatingThresholdTemperature) accessory)::setHeatingThresholdTemperature,
+          ((AccessoryWithHeatingThresholdTemperature) accessory)
               ::subscribeHeatingThresholdTemperature,
-          ((AccessoryWithHeatingThresholdTemprature) accessory)
+          ((AccessoryWithHeatingThresholdTemperature) accessory)
               ::unsubscribeHeatingThresholdTemperature);
     }
     if (accessory instanceof AccessoryWithCurrentRelativeHumidity) {
