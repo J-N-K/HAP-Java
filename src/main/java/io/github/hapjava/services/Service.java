@@ -29,4 +29,18 @@ public interface Service {
    *     ########-####-####-####-############.
    */
   String getType();
+
+  /**
+   * List of all the services to which the service links
+   *
+   * @return the list of linked services.
+   */
+  List<Service> getLinkedServices();
+
+  /**
+   * Add linked services
+   *
+   * @param service linked service
+   */
+  void addLinkedService(Service service);
 }

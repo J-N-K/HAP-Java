@@ -7,6 +7,13 @@
     * `services` package consists of services, which grouping characteristics. e.g. `WindowCoveringService` defines mandatory and optional characteristics for a window covering service as it is defined in HAP spec.
     * `server` package consists classes to run HomeKit server and handle communication
 * the process is following: client, e.g. openHAB bindings, extends accessory classes, e.g. `WindowCoveringAccessory` and implements all required methods. WindowCoveringAccessory is linked already to WindowCoveringService, that in turn is link to single characteristics. 
+* linked service support
+
+## New and improved
+
+* Valid values are supported for enum characteristics instead of min and max values
+* Supported valid states for Thermostat, SecuritySystem, HeaterCooler and HumidifierDehumidifier [#108] [#120](https://github.com/hap-java/HAP-Java/pull/120)
+* Support for FilterMaintenance. Can be used as a linked service for an Air Purifier  [#124](https://github.com/hap-java/HAP-Java/pull/124)
 
 # HAP-Java 1.1.5
 
@@ -21,6 +28,7 @@
 * Fix various spec violations and optimize communications to improve performance [#65](https://github.com/hap-java/HAP-Java/pull/65)
 * Fix a pairing issue in which HAP-Java could listen on a different interface than that which it advertises [#67](https://github.com/hap-java/HAP-Java/pull/67)
 * Allow window covering to be used without optional characteristics. The inclusion of `HoldPositionCharacteristic` did terrible things, and we're still not sure why. Addressed [#56](https://github.com/hap-java/HAP-Java/pull/56)
+* Air Purifier didn't support rotation speed characteristics. [#124](https://github.com/hap-java/HAP-Java/pull/124)
 
 ## New and improved
 

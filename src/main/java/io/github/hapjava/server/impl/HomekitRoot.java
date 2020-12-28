@@ -9,6 +9,7 @@ import io.github.hapjava.server.impl.connections.SubscriptionManager;
 import io.github.hapjava.server.impl.jmdns.JmdnsHomekitAdvertiser;
 import java.io.IOException;
 import java.net.InetAddress;
+import javax.jmdns.JmDNS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,11 @@ public class HomekitRoot {
     this.authInfo = authInfo;
     this.label = label;
     this.registry = new HomekitRegistry(label);
+  }
+
+  HomekitRoot(String label, HomekitWebHandler webHandler, JmDNS jmdns, HomekitAuthInfo authInfo)
+      throws IOException {
+    this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(jmdns));
   }
 
   /**
@@ -115,8 +121,8 @@ public class HomekitRoot {
         .thenAccept(
             port -> {
               try {
-                refreshAuthInfo();
-                advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
+                advertiser.advertise(
+                    label, authInfo.getMac(), port, configurationIndex, authInfo.getSetupId());
               } catch (Exception e) {
                 throw new RuntimeException(e);
               }

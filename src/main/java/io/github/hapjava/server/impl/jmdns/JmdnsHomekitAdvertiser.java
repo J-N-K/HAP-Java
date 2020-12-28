@@ -1,5 +1,7 @@
 package io.github.hapjava.server.impl.jmdns;
 
+import static io.github.hapjava.server.impl.crypto.HAPSetupCodeUtils.generateSHA512Hash;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -21,21 +23,28 @@ public class JmdnsHomekitAdvertiser {
 
   private String label;
   private String mac;
+  private String setupId;
   private int port;
   private int configurationIndex;
+  private ServiceInfo serviceInfo;
+
+  public JmdnsHomekitAdvertiser(JmDNS jmdns) {
+    this.jmdns = jmdns;
+  }
 
   public JmdnsHomekitAdvertiser(InetAddress localAddress) throws UnknownHostException, IOException {
     jmdns = JmDNS.create(localAddress);
   }
 
-  public synchronized void advertise(String label, String mac, int port, int configurationIndex)
-      throws Exception {
+  public synchronized void advertise(
+      String label, String mac, int port, int configurationIndex, String setupId) throws Exception {
     if (isAdvertising) {
       throw new IllegalStateException("HomeKit advertiser is already running");
     }
     this.label = label;
     this.mac = mac;
     this.port = port;
+    this.setupId = setupId;
     this.configurationIndex = configurationIndex;
 
     logger.trace("Advertising accessory " + label);
@@ -53,7 +62,7 @@ public class JmdnsHomekitAdvertiser {
   }
 
   public synchronized void stop() {
-    jmdns.unregisterAllServices();
+    unregisterService();
   }
 
   public synchronized void setDiscoverable(boolean discoverable) throws IOException {
@@ -61,7 +70,7 @@ public class JmdnsHomekitAdvertiser {
       this.discoverable = discoverable;
       if (isAdvertising) {
         logger.trace("Re-creating service due to change in discoverability to " + discoverable);
-        jmdns.unregisterAllServices();
+        unregisterService();
         registerService();
       }
     }
@@ -72,22 +81,35 @@ public class JmdnsHomekitAdvertiser {
       this.configurationIndex = revision;
       if (isAdvertising) {
         logger.trace("Re-creating service due to change in configuration index to " + revision);
-        jmdns.unregisterAllServices();
+        unregisterService();
         registerService();
       }
     }
   }
 
+  private void unregisterService() {
+    if (serviceInfo != null) {
+      jmdns.unregisterService(serviceInfo);
+    }
+  }
+
   private void registerService() throws IOException {
     logger.info("Registering " + SERVICE_TYPE + " on port " + port);
+    serviceInfo = buildServiceInfo();
+    jmdns.registerService(serviceInfo);
+  }
+
+  private ServiceInfo buildServiceInfo() {
+    logger.trace("MAC:" + mac + " Setup Id:" + setupId);
     Map<String, String> props = new HashMap<>();
     props.put("sf", discoverable ? "1" : "0");
     props.put("id", mac);
     props.put("md", label);
+    props.put("sh", generateSHA512Hash(setupId + mac));
     props.put("c#", Integer.toString(configurationIndex));
     props.put("s#", "1");
     props.put("ff", "0");
     props.put("ci", "1");
-    jmdns.registerService(ServiceInfo.create(SERVICE_TYPE, label, port, 1, 1, props));
+    return ServiceInfo.create(SERVICE_TYPE, label, port, 1, 1, props);
   }
 }
